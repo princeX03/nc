@@ -1,0 +1,44 @@
+PRACTICAL 10: BEAGLEBONE BLACK + THINGSPEAK DATA LOGGING
+Original manual setup requires physical BeagleBone Black and LDR/ADC hardware. BeagleBone Black is not a standard Wokwi board.
+
+Original connections/process:
+- LDR + 10 kΩ resistor -> voltage divider
+- Divider output -> BeagleBone Black analog input P9_40
+- BeagleBone Black -> internet
+- ThingSpeak channel Field 1 -> use Write API Key
+
+Steps (physical device):
+1. Create a channel at https://thingspeak.com/ and enable Field 1.
+2. Copy the Write API Key.
+3. Connect the LDR voltage divider to P9_40 as shown in the manual.
+4. Run this code on the physical BeagleBone Black after setting your key:
+
+import Adafruit_BBIO.ADC as ADC
+import time
+import httplib, urllib
+
+sensor_pin = "P9_40"
+ADC.setup()
+
+while True:
+    reading = ADC.read(sensor_pin)
+    voltage = reading * 1.8
+    params = urllib.urlencode({
+        'field1': voltage,
+        'key': 'YOUR_WRITE_API_KEY'
+    })
+    headers = {
+        "Content-type": "application/x-www-form-urlencoded",
+        "Accept": "text/plain"
+    }
+    conn = httplib.HTTPConnection("api.thingspeak.com:80")
+    conn.request("POST", "/update", params, headers)
+    response = conn.getresponse()
+    print("ADC Reading:", reading)
+    print("Voltage:", voltage)
+    print("HTTP Response:", response.status, response.reason)
+    time.sleep(16)
+
+5. Open ThingSpeak and view the Field 1 graph.
+
+Exam note: The exact practical needs physical hardware; the manual also lists a Wokwi reference, so ask if an adapted ESP32 version is accepted.

@@ -1,0 +1,14 @@
+PRACTICAL 1: RASPBERRY PI SETUP
+Wokwi: Not a circuit simulation practical. Requires physical Raspberry Pi and microSD card.
+
+Steps:
+1. Go to https://www.raspberrypi.com/software/
+2. Download and install Raspberry Pi Imager.
+3. Insert microSD card.
+4. Open Raspberry Pi Imager.
+5. Choose Device -> select your Raspberry Pi model.
+6. Choose OS -> Raspberry Pi OS.
+7. Choose Storage -> select microSD card.
+8. Click Write and wait for completion.
+
+Code: Not required.

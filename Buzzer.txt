@@ -1,0 +1,28 @@
+PRACTICAL 8: BUZZER ALARM
+Board: Raspberry Pi Pico / MicroPython.
+
+Connections:
+- Buzzer (+) -> Pico GP15
+- Buzzer (-) -> Pico GND
+
+Steps:
+1. Wokwi -> New Project -> Raspberry Pi Pico.
+2. Click + -> add a buzzer.
+3. Connect it as listed above.
+4. Paste into main.py:
+
+from machine import Pin, PWM
+import time
+
+buzzer = PWM(Pin(15))
+buzzer.freq(1000)
+
+while True:
+    buzzer.duty_u16(32768)
+    print("Buzzer ON")
+    time.sleep(1)
+    buzzer.duty_u16(0)
+    print("Buzzer OFF")
+    time.sleep(1)
+
+5. Click Start Simulation and listen for the beep pattern.

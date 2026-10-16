@@ -1,0 +1,61 @@
+PRACTICAL 9: DC MOTOR SPEED CONTROL
+Board: Raspberry Pi Pico / MicroPython. Needs potentiometer, servo and suitable motor driver.
+
+Connections:
+Potentiometer:
+- VCC -> Pico 3V3(OUT)
+- GND -> Pico GND
+- SIG/middle pin -> Pico GP26
+
+Servo:
+- Signal -> Pico GP16
+- V+ -> suitable supply pin for the selected servo
+- GND -> Pico GND
+
+DC motor:
+- Pico GP15 -> motor driver's PWM/enable input
+- Motor -> motor-driver output terminals
+- Pico GND -> motor-driver GND
+
+Do not connect a physical DC motor directly to a Pico GPIO.
+
+Steps:
+1. Wokwi -> New Project -> Raspberry Pi Pico.
+2. Click + -> add potentiometer, servo and a suitable motor-driver/motor component.
+3. Connect the parts using the connections above and the driver pin labels.
+4. Paste into main.py:
+
+from machine import Pin, PWM, ADC
+import time
+
+motor = PWM(Pin(15))
+motor.freq(1000)
+servo = PWM(Pin(16))
+servo.freq(50)
+pot = ADC(26)
+
+def set_servo(angle):
+    duty = int(((angle / 180) * 6554) + 1638)
+    servo.duty_u16(duty)
+
+angle = 0
+direction = 1
+
+while True:
+    value = pot.read_u16()
+    motor.duty_u16(value)
+    if value > 1000:
+        angle += direction
+        if angle >= 180:
+            angle = 180
+            direction = -1
+        elif angle <= 0:
+            angle = 0
+            direction = 1
+        set_servo(angle)
+        print("Motor speed:", int(value / 65535 * 100), "%")
+    else:
+        print("Motor stopped")
+    time.sleep(0.02)
+
+5. Start simulation and turn the potentiometer.

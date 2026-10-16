@@ -1,0 +1,34 @@
+PRACTICAL 5: CONNECT ESP32 TO WI-FI
+Board: ESP32 / Arduino C++
+
+Steps:
+1. Wokwi -> New Project -> ESP32.
+2. Open sketch.ino and paste:
+
+#include <WiFi.h>
+
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  Serial.print("Connecting");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nConnected!");
+  Serial.println(WiFi.localIP());
+  Serial.println(WiFi.RSSI());
+}
+
+void loop() {}
+
+3. Click Start Simulation.
+4. Open Serial Monitor and check output.
+
+Connections: No extra components required.

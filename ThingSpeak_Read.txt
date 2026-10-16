@@ -1,0 +1,34 @@
+PRACTICAL 6: READ TEMPERATURE AND HUMIDITY FROM THINGSPEAK
+Board: Raspberry Pi Pico W / MicroPython. Internet access required.
+
+Steps:
+1. Wokwi -> New Project -> Raspberry Pi Pico W.
+2. Open main.py and paste:
+
+import network, urequests, time
+
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect("Wokwi-GUEST", "")
+while not wlan.isconnected():
+    time.sleep(0.5)
+
+url = "https://api.thingspeak.com/channels/12397/feeds/last.json"
+
+while True:
+    try:
+        r = urequests.get(url)
+        data = r.json()
+        r.close()
+        print("Time:", data.get("created_at"))
+        print("Temp:", data.get("field4"))
+        print("Humidity:", data.get("field3"))
+    except Exception as e:
+        print("Network error:", e)
+    time.sleep(20)
+
+3. Click Start Simulation.
+4. Check Shell output.
+
+Connections: None; data is read from a public ThingSpeak channel.
+Note: Depends on Wokwi network/API support and urequests availability.

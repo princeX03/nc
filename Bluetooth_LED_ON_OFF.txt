@@ -1,0 +1,44 @@
+PRACTICAL 4: BLUETOOTH LED ON/OFF
+Note: Real HC-05 Bluetooth pairing needs a physical HC-05 and smartphone. In Wokwi, use two buttons as an ON/OFF substitute.
+
+Connections:
+- Pico GP19 -> resistor -> LED anode (+, usually long leg)
+- LED cathode (-, usually short leg/flat-edge side) -> Pico GND
+- ON button one side -> Pico GP14
+- ON button opposite side -> Pico GND
+- OFF button one side -> Pico GP13
+- OFF button opposite side -> Pico GND
+
+Steps:
+1. Wokwi -> New Project -> Raspberry Pi Pico.
+2. Click + -> add LED, resistor and two pushbuttons.
+3. Connect parts as listed above.
+4. Open main.py and paste:
+
+from machine import Pin
+import time
+
+led = Pin(19, Pin.OUT)
+on_button = Pin(14, Pin.IN, Pin.PULL_UP)
+off_button = Pin(13, Pin.IN, Pin.PULL_UP)
+
+while True:
+    if on_button.value() == 0:
+        led.value(1)
+        print("LED ON")
+        time.sleep(0.25)
+    if off_button.value() == 0:
+        led.value(0)
+        print("LED OFF")
+        time.sleep(0.25)
+
+5. Click Start Simulation.
+6. Press GP14 button -> LED ON. Press GP13 button -> LED OFF.
+
+Physical HC-05 connections from manual:
+- HC-05 VCC -> Pico VBUS (5V, verify exact board)
+- HC-05 TXD -> Pico GP0
+- HC-05 RXD -> Pico GP1
+- HC-05 GND -> Pico GND
+
+Note: A label like btn1:1.l is a button pin label, not a Pico GPIO number.

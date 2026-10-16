@@ -1,0 +1,16 @@
+PRACTICAL 2: WORD AND CHARACTER COUNT
+Board: Raspberry Pi Pico / MicroPython
+
+Steps:
+1. Open https://wokwi.com/ -> New Project -> Raspberry Pi Pico.
+2. Open main.py and replace the code with this:
+
+text = "Welcome to Raspberry Pi"
+print("Number of Words:", len(text.split()))
+print("Number of Characters:", len(text))
+
+3. Click Start Simulation.
+4. Check Shell output.
+
+Expected: Number of Words: 4; Number of Characters: 23.
+Connections: None.

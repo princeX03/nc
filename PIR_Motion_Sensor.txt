@@ -1,0 +1,27 @@
+PRACTICAL 3: PIR MOTION SENSOR
+Board: Raspberry Pi Pico / MicroPython
+
+Connections:
+- PIR VCC -> Pico 3V3(OUT)
+- PIR GND -> Pico GND
+- PIR OUT -> Pico GP15
+
+Steps:
+1. Wokwi -> New Project -> Raspberry Pi Pico.
+2. Click + -> add PIR motion sensor.
+3. Connect the three pins as listed above.
+4. Open main.py and paste:
+
+from machine import Pin
+import time
+
+pir = Pin(15, Pin.IN)
+while True:
+    if pir.value():
+        print("MOVEMENT DETECTED")
+    else:
+        print("NO MOVEMENT DETECTED")
+    time.sleep(0.5)
+
+5. Click Start Simulation and trigger the PIR sensor.
+6. Check Shell output.

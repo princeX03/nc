@@ -1,0 +1,42 @@
+PRACTICAL 7: PUBLISH TEMPERATURE USING MQTT
+Board: Raspberry Pi Pico W / MicroPython + DHT22.
+
+Connections:
+- DHT22 VCC -> Pico 3V3(OUT)
+- DHT22 GND -> Pico GND
+- DHT22 SDA/DATA -> Pico GP15
+
+Steps:
+1. Wokwi -> New Project -> Raspberry Pi Pico W.
+2. Click + -> add DHT22.
+3. Connect the three pins as listed.
+4. Paste into main.py:
+
+import network, time, dht, ujson
+from machine import Pin
+from umqtt.simple import MQTTClient
+
+sensor = dht.DHT22(Pin(15))
+wifi = network.WLAN(network.STA_IF)
+wifi.active(True)
+wifi.connect("Wokwi-GUEST", "")
+while not wifi.isconnected():
+    time.sleep(0.2)
+
+client = MQTTClient("pico-weather-demo", "broker.mqttdashboard.com")
+client.connect()
+print("MQTT connected")
+
+while True:
+    sensor.measure()
+    message = ujson.dumps({
+        "temp": sensor.temperature(),
+        "humidity": sensor.humidity()
+    })
+    client.publish("wokwi-weather", message)
+    print(message)
+    time.sleep(2)
+
+5. Click Start Simulation and check Shell.
+
+Note: If umqtt.simple is missing or broker cannot connect, library/network setup is required.
